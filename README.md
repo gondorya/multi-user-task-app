@@ -1,3 +1,3 @@
 # Multi User Task App
 
-Node.js app with MongoDB and Mongoose
+Node.js app with Express.js, MongoDB and Mongoose
