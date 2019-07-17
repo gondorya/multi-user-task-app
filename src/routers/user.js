@@ -1,4 +1,5 @@
 const express = require('express');
+const sharp = require('sharp');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
 const upload = require('../middleware/upload');
@@ -92,7 +93,8 @@ router.post(
 	auth,
 	upload('avatar', 6000000, 'jpg|jpeg|JPG|JPEG'),
 	async (req, res) => {
-		req.user.avatar = req.file.buffer;
+		const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer();
+		req.user.avatar = buffer;
 		await req.user.save();
 		res.send();
 	},
