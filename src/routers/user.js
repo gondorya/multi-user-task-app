@@ -82,9 +82,9 @@ router.patch('/users/me', auth, async (req, res) => {
 router.delete('/users/me', auth, async (req, res) => {
 	try {
 		await req.user.remove();
-		sendFarewellEmail(req.user.email, req.user.name);
-		res.send(reg.user);
-	} catch (error) {
+		sendCancelationEmail(req.user.email, req.user.name);
+		res.send(req.user);
+	} catch (e) {
 		res.status(500).send();
 	}
 });
@@ -94,7 +94,7 @@ router.delete('/users/me', auth, async (req, res) => {
 router.post(
 	'/users/me/avatar',
 	auth,
-	upload('avatar', 6000000, 'jpg|jpeg|JPG|JPEG'),
+	upload('avatar', 6000000, 'jpg|jpeg|png|JPG|JPEG'),
 	async (req, res) => {
 		const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer();
 		req.user.avatar = buffer;
